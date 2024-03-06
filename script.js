@@ -269,5 +269,20 @@ function pick(guess) {
   while (numbers.length < 10) {
     numbers.push(Math.floor(Math.random() * 11))
   }
-  text.innerText = `Você pegou ${guess}. Aqui está seus números: `
+  text.innerText = `Você pegou ${guess}. Aqui está seus números:\n`
+  for(i = 0; i < 10; i++) {
+    text.innerText = `${numbers[i]}\n`
+  }
+  if (numbers.includes(guess)) {
+    text.innerText += "Certo! Você ganhou 20 ouros";
+    gold += 20;
+    goldText.innerText = gold;
+  } else {
+    text.innerText = "Errado! Você perdeu 10 de vida";
+    health -= 10;
+    healthText.innerText = health;
+    if(health <= 0) {
+      lose()
+    }
+  }
 }
