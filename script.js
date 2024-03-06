@@ -4,7 +4,7 @@ let gold = 50;
 let currentWeapon = 0;
 let fighting;
 let monsterHealth;
-let inventory = ["stick"];
+let inventory = ["varinha"];
 
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
@@ -17,10 +17,10 @@ const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
 const weapons = [
-  { name: 'stick', power: 5 },
-  { name: 'dagger', power: 30 },
-  { name: 'claw hammer', power: 50 },
-  { name: 'sword', power: 100 }
+  { name: 'varinha', power: 5 },
+  { name: 'punhal', power: 30 },
+  { name: 'martelo', power: 50 },
+  { name: 'espada', power: 100 }
 ];
 const monsters = [
   {
@@ -29,64 +29,64 @@ const monsters = [
     health: 15
   },
   {
-    name: "fanged beast",
+    name: "fera de garras",
     level: 8,
     health: 60
   },
   {
-    name: "dragon",
+    name: "dragão",
     level: 20,
     health: 300
   }
 ]
 const locations = [
   {
-    name: "town square",
-    "button text": ["Go to store", "Go to cave", "Fight dragon"],
+    name: "praça da cidade",
+    "button text": ["Vá para loja", "Vá para a caverna", "Lutar com o dragão"],
     "button functions": [goStore, goCave, fightDragon],
-    text: "You are in the town square. You see a sign that says \"Store\"."
+    text: "Você está na praça da cidade. Você vê uma placa escrito \"Loja\"."
   },
   {
-    name: "store",
-    "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
+    name: "loja",
+    "button text": ["Comprar 10 de vida(10 ouros)", "Comprar arma (30 ouros)", "Vá para praça da cidade"],
     "button functions": [buyHealth, buyWeapon, goTown],
-    text: "You enter the store."
+    text: "Você entrou na loja."
   },
   {
-    name: "cave",
-    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
+    name: "caverna",
+    "button text": ["Lutar com slime", "Lutar com fera de garras", "Vá para praça da cidade"],
     "button functions": [fightSlime, fightBeast, goTown],
-    text: "You enter the cave. You see some monsters."
+    text: "Você entrou na caverna. Você vê alguns monstros."
   },
   {
-    name: "fight",
-    "button text": ["Attack", "Dodge", "Run"],
+    name: "lutar",
+    "button text": ["Ataque", "Desviar", "Correr"],
     "button functions": [attack, dodge, goTown],
-    text: "You are fighting a monster."
+    text: "Você esta lutando com um monstro."
   },
   {
-    name: "kill monster",
-    "button text": ["Go to town square", "Go to town square", "Go to town square"],
+    name: "matar monstro",
+    "button text": ["Vá para praça da cidade", "Vá para praça da cidade", "Vá para praça da cidade"],
     "button functions": [goTown, goTown, goTown],
-    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
+    text: 'O monstro grita "Arg!" ao morrer. Você ganha alguns pontos de experiência, e um pouco de ouro.'
   },
   {
     name: "lose",
-    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+    "button text": ["RECOMEÇAR?", "RECOMEÇAR?", "RECOMEÇAR?"],
     "button functions": [restart, restart, restart],
-    text: "You die. &#x2620;"
+    text: "VOCÊ MORREU. &#x2620;"
   },
   { 
     name: "win", 
-    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"], 
+    "button text": ["RECOMEÇAR?", "RECOMEÇAR?", "RECOMEÇAR?"], 
     "button functions": [restart, restart, restart], 
-    text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;" 
+    text: "Você derrotou o dragão, VOCÊ VENCEU O JOGO! &#x1F389;" 
   },
   {
     name: "easter egg",
     "button text": ["2", "8", "Go to town square?"],
     "button functions": [pickTwo, pickEight, goTown],
-    text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!"
+    text: "Você encontrou o jogo secreto. Escolha um número acima. Dez números serão sorteados entre 0 e 10. Se o número que você escolheu for um dos sorteados, VOCÊ VENCE!"
   }
 ];
 
@@ -125,7 +125,7 @@ function buyHealth() {
     goldText.innerText = gold;
     healthText.innerText = health;
   } else {
-    text.innerText = "You do not have enough gold to buy health.";
+    text.innerText = "Você não tem ouro o suficiente para comprar vida.";
   }
 }
 
@@ -136,15 +136,15 @@ function buyWeapon() {
       currentWeapon++;
       goldText.innerText = gold;
       let newWeapon = weapons[currentWeapon].name;
-      text.innerText = "You now have a " + newWeapon + ".";
+      text.innerText = `Agora você tem uma ${newWeapon}.`
       inventory.push(newWeapon);
-      text.innerText += " In your inventory you have: " + inventory;
+      text.innerText += `Em seu inventário: ${inventory}`;
     } else {
-      text.innerText = "You do not have enough gold to buy a weapon.";
+      text.innerText = "Você não tem ouro o suficiente para comprar.";
     }
   } else {
-    text.innerText = "You already have the most powerful weapon!";
-    button2.innerText = "Sell weapon for 15 gold";
+    text.innerText = "Você já possui a arma mais poderosa!";
+    button2.innerText = "Vender arma por 15 de ouro";
     button2.onclick = sellWeapon;
   }
 }
@@ -154,10 +154,10 @@ function sellWeapon() {
     gold += 15;
     goldText.innerText = gold;
     let currentWeapon = inventory.shift();
-    text.innerText = "You sold a " + currentWeapon + ".";
-    text.innerText += " In your inventory you have: " + inventory;
+    text.innerText = `Você vendeu ${currentWeapon}.`
+    text.innerText += ` Em seu inventário possui ${inventory}`
   } else {
-    text.innerText = "Don't sell your only weapon!";
+    text.innerText = "Não venda sua única arma!";
   }
 }
 
@@ -185,8 +185,8 @@ function goFight() {
 }
 
 function attack() {
-  text.innerText = "The " + monsters[fighting].name + " attacks.";
-  text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
+  text.innerText = `O ${monsters[fighting].name} ataca`;
+  text.innerText += ` Você ataca com sua ${weapons[currentWeapon].name}.`
   health -= getMonsterAttackValue(monsters[fighting].level);
   if (isMonsterHit()) {
     monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;    
@@ -205,7 +205,7 @@ function attack() {
     }
   }
   if (Math.random() <= .1 && inventory.length !== 1) {
-    text.innerText += " Your " + inventory.pop() + " breaks.";
+    text.innerText += ` Sua ${inventory.pop()} quebrou`
     currentWeapon--;
   }
 }
@@ -221,7 +221,7 @@ function isMonsterHit() {
 }
 
 function dodge() {
-  text.innerText = "You dodge the attack from the " + monsters[fighting].name;
+  text.innerText = `Você desviou o ataque do ${monsters[fighting].name}`
 }
 
 function defeatMonster() {
@@ -245,7 +245,7 @@ function restart() {
   health = 100;
   gold = 50;
   currentWeapon = 0;
-  inventory = ["stick"];
+  inventory = ["varinha"];
   goldText.innerText = gold;
   healthText.innerText = health;
   xpText.innerText = xp;
@@ -267,6 +267,7 @@ function pickEight() {
 function pick(guess) {
   const numbers = [];
   while (numbers.length < 10) {
-
+    numbers.push(Math.floor(Math.random() * 11))
   }
+  text.innerText = `Você pegou ${guess}. Aqui está seus números: `
 }
